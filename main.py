@@ -16,18 +16,23 @@ class BaseRouter:
 
     def actions(self, events):
         for event in events:
-            if isinstance(event, int):
+            if isinstance(event, float):
                 time.sleep(event)
                 continue
             self.controller.press(event)
             self.controller.release(event)
-        self.counter = len([event for event in events if not isinstance(event, int)]) + 1
+        self.counter = len([
+            event
+            for event in events
+            if not isinstance(event, float)
+        ])
 
     def on_press(self, input_key):
         if not self.counter:
             key = get_letter(input_key)
             sequence = self.extractor.extract_sequence(key, self.language)
-            self.actions(sequence)
+            if sequence is not None:
+                self.actions(sequence)
             if input_key == keyboard.Key.alt_l:
                 self.language = get_layout()
 

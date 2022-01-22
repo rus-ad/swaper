@@ -10,7 +10,7 @@ class SwapHandler(AbstractHandler):
     _move = [Key.end]
 
     def aggregate_command(self, sequence):
-        command = self._move
+        command = self._move.copy()
         if self._state:
             command += self._move + sequence
         else:

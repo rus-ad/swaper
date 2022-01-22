@@ -29,12 +29,18 @@ class FastFly(AbstractHandler):
 
     _move = [Key.home]
     _chars = aggregate_sequence(['fа'])
+    _state = True
 
     def get_actions(self, action, lang: str):
         if action not in self._chars:
             return super()._to_next_handler(action, lang)
-        if lang == 'ru':
-            return [0.1, KeyCode.from_char('м')]
-        if lang == 'en':
-            return [0.1, KeyCode.from_char('v')]
+        if self._state:
+            self._state = not self._state
+            if lang == 'ru':
+                return [1.0, KeyCode.from_char('м')]
+            if lang == 'en':
+                return [1.0, KeyCode.from_char('v')]
+        else:
+            self._state = not self._state
+            return None
         raise NotImplementedError
