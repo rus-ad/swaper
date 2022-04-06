@@ -12,15 +12,15 @@ class SwapHandler(AbstractHandler):
     def aggregate_command(self, sequence):
         command = self._move.copy()
         if self._state:
-            command += self._move + sequence
+            command += self._move + self._move + sequence
         else:
-            command += sequence + self._move
+            command += self._move + sequence + self._move
         self._state = not self._state
         command += self._move
         return command
 
     def get_actions(self, action, lang: str):
-        if action != Key.end:
+        if action != Key.shift_r:
             return super()._to_next_handler(action, lang)
 
         if lang == 'ru':

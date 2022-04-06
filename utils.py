@@ -24,6 +24,6 @@ def get_layout():
     pf = getattr(u, "GetKeyboardLayout")
     if hex(pf(0)) == '0x4190419':
         return 'ru'
-    if hex(pf(0)) == '0x8090809':
+    if hex(pf(0)) == '0x4090409':
         return 'en'
     raise Exception(f"This type unavalible: {hex(pf(0))}")
