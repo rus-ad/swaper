@@ -4,6 +4,7 @@ from utils import get_letter, get_layout
 from chain import ChainListener
 
 from pynput import keyboard
+from pynput.keyboard import Key, KeyCode
 
 
 swith = True
@@ -14,6 +15,7 @@ class BaseRouter:
         self.controller = keyboard.Controller()
         self.extractor = ChainListener()
         self.language = get_layout()
+        self.all_trigers = self.extractor.extractor.triggers
 
     def actions(self, events):
         for event in events:
@@ -25,7 +27,7 @@ class BaseRouter:
 
     def on_press(self, input_key):
         global swith
-        if swith:
+        if swith and input_key in self.all_trigers:
             swith = False
             key = get_letter(input_key)
             sequence = self.extractor.extract_sequence(key, self.language)
@@ -33,8 +35,6 @@ class BaseRouter:
                 self.actions(sequence)
             if input_key == keyboard.Key.alt_l:
                 self.language = get_layout()
-
-            print(input_key, swith)
 
     def on_release(self, input_key):
         global swith
